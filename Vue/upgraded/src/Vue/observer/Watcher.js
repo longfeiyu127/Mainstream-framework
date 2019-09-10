@@ -20,7 +20,8 @@ class Watcher {
   }
   run () {
     const val = this.get();
-    if (val !== this.val) {
+    // 注意引用类型判断
+    if (val !== this.val || isObject(val)) {
       this.val = val;
       this.cb.call(this.vm, val);
     }
@@ -31,6 +32,10 @@ class Watcher {
       this.depIds[dep.id] = dep;
     }
   }
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
 }
 
 export default Watcher;
