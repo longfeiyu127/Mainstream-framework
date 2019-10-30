@@ -12,17 +12,9 @@ let vm = new Vue({
   },
 });
 
-inputDom.addEventListener('input', (e) => {
-  vm.txt = e.target.value;
-});
+inputDom.addEventListener('input', e => vm.txt = e.target.value);
 
-buttonDom.addEventListener('click', (e) => {
-  vm.arr.push(1)
-});
+buttonDom.addEventListener('click', e => vm.arr.push(1));
 
-vm.$watch('txt', txt => {
-  spanDom.innerHTML = txt
-});
-vm.$watch('arr', arr => {
-  span1Dom.innerHTML = arr
-});
+vm.$watch('txt', txt => spanDom.innerHTML = txt);
+vm.$watch('arr', arr => span1Dom.innerHTML = arr);

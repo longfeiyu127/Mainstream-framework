@@ -17,7 +17,6 @@ export default class VNode {
     this.parent = undefined
     this.isStatic = false
     this.isRootInsert = true
-    this.isComment = false
     this.isCloned = false
   }
 }
@@ -25,7 +24,6 @@ export default class VNode {
 export const createEmptyVNode = (text) => {
   const node = new VNode()
   node.text = text
-  node.isComment = true
   return node
 }
 
@@ -44,7 +42,6 @@ export function cloneVNode (vnode) {
   )
   cloned.isStatic = vnode.isStatic
   cloned.key = vnode.key
-  cloned.isComment = vnode.isComment
   cloned.isCloned = true
   return cloned
 }

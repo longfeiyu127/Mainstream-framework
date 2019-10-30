@@ -21,11 +21,7 @@ function removeNode (el) {
 }
 
 function sameVnode (a, b) {
-  return a.key === b.key && (
-    a.tag === b.tag &&
-    a.isComment === b.isComment &&
-    isDef(a.data) === isDef(b.data)
-  )
+  return a.key === b.key && a.tag === b.tag && isDef(a.data) === isDef(b.data)
 }
 
 function addVnodes (parentElm, refElm, vnodes, startIdx, endIdx) {
@@ -151,7 +147,6 @@ export function patch (oldVnode, vnode, hydrating) {
     }
     return
   }
-  console.log('oldVnodeoldVnodeoldVnode', oldVnode)
   if (isUndef(oldVnode)) {
     // 新建节点
     createElm(vnode)

@@ -18,15 +18,12 @@ class Vue {
     this._ast = code.ast
     this._render = code.renderFn
     // this._renderString = code.render
-    console.log('code:', code)
     // 监听数据
     observe(data);
     // 执行render
     initRender(this)
     initUpdate(this)
     this._update(this._render.call(this), false)
-    console.log('$vnode', this._vnode)
-    console.log(this)
     this.$mount(this)
   }
   $watch(expOrFn, cb) {

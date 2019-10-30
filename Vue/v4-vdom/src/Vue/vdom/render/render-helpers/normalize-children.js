@@ -8,7 +8,7 @@ export function normalizeChildren (children) {
 }
 
 function isTextNode (node) {
-  return isDef(node) && isDef(node.text) && node.isComment === false
+  return isDef(node) && isDef(node.text)
 }
 
 function normalizeArrayChildren (children, nestedIndex) {

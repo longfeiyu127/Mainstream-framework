@@ -2,7 +2,6 @@ import { genHandlers } from './events'
 import { ALWAYS_NORMALIZE } from '../../vdom/create-element'
 
 export function generate (ast) {
-  console.log('astastast', ast)
   const code = ast ? genElement(ast) : '_c("div")'
   return {
     render: `with(this){return ${code}}`
@@ -111,8 +110,6 @@ function needsNormalization (el) {
 function genNode (node) {
   if (node.type === 1) {
     return genElement(node)
-  } else if (node.type === 3 && node.isComment) {
-    return genComment(node)
   } else {
     return genText(node)
   }
@@ -123,10 +120,6 @@ export function genText (text) {
     ? text.expression
     : transformSpecialNewlines(JSON.stringify(text.text))
   })`
-}
-
-export function genComment (comment) {
-  return `_e(${JSON.stringify(comment.text)})`
 }
 
 function transformSpecialNewlines (text) {

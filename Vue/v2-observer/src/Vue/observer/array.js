@@ -13,9 +13,6 @@ const methodsToPatch = [
   'reverse'
 ]
 
-/**
- * Intercept mutating methods and emit events
- */
 methodsToPatch.forEach(function (method) {
   // cache original method
   const original = arrayProto[method]

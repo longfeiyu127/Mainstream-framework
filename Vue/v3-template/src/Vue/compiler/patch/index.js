@@ -7,8 +7,10 @@ export default function patch(el, vm) {
       const text = node.textContent;
 
       if (node.nodeType == 1) {  
+        // 元素节点
         patchElement(node, vm);
       } else if (node.nodeType == 3) {
+        // 文本节点
         patchText(node, vm, text);
       }
 

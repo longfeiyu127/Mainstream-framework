@@ -75,8 +75,8 @@ export function parse (template) {
   parseHTML(template, {
     start (tag, attrs, unary) {
       let element = createASTElement(tag, attrs, currentParent)
-      processFor(element)
-      processIf(element)
+      processFor(element) // 处理for指令
+      processIf(element) // 处理if指令
 
       if (!root) root = element
 
@@ -102,12 +102,7 @@ export function parse (template) {
       }
       const children = currentParent.children
       if (!text.trim()) {
-        if (!text.trim() && !children.length) {
-          // 空节点
-          text = ''
-        } else {
-          text = ' '
-        }
+        text = (!text.trim() && !children.length) ? '' : ' '
       }
       if (text) {
         let res
@@ -224,7 +219,6 @@ export function addIfCondition (el, condition) {
 
 function processAttrs (el) {
   const list = el.attrsList
-  console.log('listlist', list)
   let i, l, name, value
   for (i = 0, l = list.length; i < l; i++) {
     name = list[i].name

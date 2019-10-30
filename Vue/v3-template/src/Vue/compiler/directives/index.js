@@ -19,18 +19,6 @@ export function handleEvent (node, vm, exp, dir) {
   }
 }
 
-export function handleModel (node, vm, exp, dir) {
-  let val = vm[exp];
-  updateModel(node, val);
-  new Watcher(vm, exp, (value) => updateModel(node, value));
-  handleEvent(node, vm, (e) => {
-    const newValue = e.target.value;
-    if (val === newValue) return;
-    vm[exp] = newValue;
-    val = newValue;
-  }, 'input')
-}
-
 const updateModel = (node, value) => node.value = isUndef(value) ? '' : value;
 
 export function handleIf (node, vm, exp, dir) {
