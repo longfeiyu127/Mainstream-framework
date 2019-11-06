@@ -34,7 +34,7 @@ function removeVnodes (vnodes, startIdx, endIdx) {
   for (; startIdx <= endIdx; ++startIdx) {
     const ch = vnodes[startIdx]
     if (isDef(ch)) {
-      removeNode(vnode.elm)
+      removeNode(ch.elm)
     }
   }
 }
@@ -52,23 +52,25 @@ function updateChildren (parentElm, oldCh, newCh) {
 
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
     if (isUndef(oldStartVnode)) {
-      oldStartVnode = oldCh[++oldStartIdx]
+      oldStartVnode = oldCh[++oldStartIdx] // Vnode has been moved left
     } else if (isUndef(oldEndVnode)) {
       oldEndVnode = oldCh[--oldEndIdx]
-    } else if (sameVnode(oldStartVnode, newStartVnode)) {
+    } else if (sameVnode(oldStartVnode, newStartVnode)) { // oldStart == newStart  更新节点
       patchVnode(oldStartVnode, newStartVnode)
       oldStartVnode = oldCh[++oldStartIdx]
       newStartVnode = newCh[++newStartIdx]
-    } else if (sameVnode(oldEndVnode, newEndVnode)) {
+    } else if (sameVnode(oldEndVnode, newEndVnode)) { // oldEnd == newEnd  更新节点
       patchVnode(oldEndVnode, newEndVnode)
       oldEndVnode = oldCh[--oldEndIdx]
       newEndVnode = newCh[--newEndIdx]
-    } else if (sameVnode(oldStartVnode, newEndVnode)) {
+    } else if (sameVnode(oldStartVnode, newEndVnode)) { // oldStart == newEnd   更新节点 节点右移
       patchVnode(oldStartVnode, newEndVnode)
+      nodeOps.insertBefore(parentElm, oldStartVnode.elm, nodeOps.nextSibling(oldEndVnode.elm))
       oldStartVnode = oldCh[++oldStartIdx]
       newEndVnode = newCh[--newEndIdx]
-    } else if (sameVnode(oldEndVnode, newStartVnode)) {
+    } else if (sameVnode(oldEndVnode, newStartVnode)) { // oldStart == newEnd   更新节点 节点左移
       patchVnode(oldEndVnode, newStartVnode)
+      nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm)
       oldEndVnode = oldCh[--oldEndIdx]
       newStartVnode = newCh[++newStartIdx]
     } else {
@@ -83,6 +85,7 @@ function updateChildren (parentElm, oldCh, newCh) {
         if (sameVnode(vnodeToMove, newStartVnode)) {
           patchVnode(vnodeToMove, newStartVnode)
           oldCh[idxInOld] = undefined
+          nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm)
         } else {
           // 相同的键，但不同的元素。当作新元素对待
           createElm(newStartVnode, parentElm, oldStartVnode.elm, false, newCh, newStartIdx)
@@ -91,10 +94,10 @@ function updateChildren (parentElm, oldCh, newCh) {
       newStartVnode = newCh[++newStartIdx]
     }
   }
-  if (oldStartIdx > oldEndIdx) {
+  if (oldStartIdx > oldEndIdx) { // 需要新增节点
     refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm
     addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx)
-  } else if (newStartIdx > newEndIdx) {
+  } else if (newStartIdx > newEndIdx) { // 需要移除节点
     removeVnodes(oldCh, oldStartIdx, oldEndIdx)
   }
 }
